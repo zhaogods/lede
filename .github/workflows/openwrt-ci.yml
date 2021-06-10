@@ -51,8 +51,13 @@ jobs:
           ./scripts/feeds install -a
 
       - name: Generate configuration file
-        run: make defconfig
-
+        run: make defconfi
+      - name: Costom configure file
+        run: |
+          rm -f ./.config*
+          touch ./.config
+           cat >> .config <<EOF
+            CONFIG_PACKAGE_luci-app-frpc=y
       - name: Make download
         run: |
           make download -j8
@@ -65,7 +70,7 @@ jobs:
           echo "Space usage:"
           echo "======================="
           df -h
-          echo "======================="
+          echo "==================
           du -h --max-depth=1 ./ --exclude=build_dir --exclude=bin
           du -h --max-depth=1 ./build_dir
           du -h --max-depth=1 ./bin
@@ -75,7 +80,7 @@ jobs:
           mkdir -p ./artifact/firmware
           mkdir -p ./artifact/package
           mkdir -p ./artifact/buildinfo
-          rm -rf $(find ./bin/targets/ -type d -name "packages")
+          rm -rf $(find ./bin/targets/ -type d -name "packages"
           cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
           cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
           cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
@@ -85,7 +90,6 @@ jobs:
         with:
           name: OpenWrt_buildinfo
           path: ./artifact/buildinfo/
-
       - name: Deliver package
         uses: actions/upload-artifact@v2
         with:
