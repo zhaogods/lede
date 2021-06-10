@@ -52,12 +52,14 @@ jobs:
 
       - name: Generate configuration file
         run: make defconfi
+        
       - name: Costom configure file
         run: |
           rm -f ./.config*
           touch ./.config
            cat >> .config <<EOF
             CONFIG_PACKAGE_luci-app-frpc=y
+            
       - name: Make download
         run: |
           make download -j8
